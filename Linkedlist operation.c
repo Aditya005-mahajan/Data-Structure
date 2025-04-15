@@ -7,24 +7,28 @@ typedef struct node {
 } node;
 
 typedef struct {
-    node *first;
+    struct node *first;
 } list;
 
-list *make_list(void) {
-    list *l = (list *)malloc(sizeof(list));
+// Function to create a list
+list* make_list(void) {
+    list *l;
+    l = (list*) malloc(sizeof(list));
     l->first = NULL;
     return l;
 }
 
+// Function to create and insert at end
 void createlist(list *l, int v) {
-    node *n = (node *)malloc(sizeof(node));
+    node *n, *p;
+    n = (node*) malloc(sizeof(node));
     n->info = v;
     n->next = NULL;
 
     if (l->first == NULL) {
         l->first = n;
     } else {
-        node *p = l->first;
+        p = l->first;
         while (p->next != NULL) {
             p = p->next;
         }
@@ -32,104 +36,102 @@ void createlist(list *l, int v) {
     }
 }
 
-void firstnode(list *l, int v) {
-    node *n = (node *)malloc(sizeof(node));
+// Insert at the beginning
+void first_node(list *l, int v) {
+    node *n;
+    n = (node*) malloc(sizeof(node));
     n->info = v;
     n->next = l->first;
     l->first = n;
 }
 
-void maddnode(list *l, int p, int v) {
-    node *t = l->first;
-    while (t != NULL && t->info != p) {
-        t = t->next;
+// Insert in middle (after a specific value)
+void midaddnode(list *l, int p, int v) {
+    node *temp = l->first;
+    while (temp != NULL && temp->info != p) {
+        temp = temp->next;
     }
+    if (temp == NULL) return;
 
-    if (t != NULL) {
-        node *n = (node *)malloc(sizeof(node));
-        n->info = v;
-        n->next = t->next;
-        t->next = n;
-    } else {
-        printf("Value %d not found in the list.\n", p);
-    }
+    node *n = (node*) malloc(sizeof(node));  // Fixed this line
+    n->info = v;
+    n->next = temp->next;
+    temp->next = n;
 }
 
-void laddnode(list *l, int v) {
+// Insert at end (reusing createlist function)
+void last_node(list *l, int v) {
     createlist(l, v);
 }
 
-void printlist(list *l) {
-    node *t = l->first;
-    printf("Linked List: ");
-    while (t != NULL) {
-        printf("%d -> ", t->info);
-        t = t->next;
+// Delete by value
+void delete_node(list *l, int val) {
+    node *temp = l->first, *prev = NULL;
+
+    if (temp != NULL && temp->info == val) {
+        l->first = temp->next;
+        free(temp);
+        return;
+    }
+
+    while (temp != NULL && temp->info != val) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) return;
+
+    prev->next = temp->next;
+    free(temp);
+}
+
+// Display list
+void display(list *l) {
+    node *temp = l->first;
+    printf("NTR VAL IN LIST:\n");
+    while (temp != NULL) {
+        printf("%d\n", temp->info);
+        temp = temp->next;
+    }
+
+    temp = l->first;
+    while (temp != NULL) {
+        printf("%d -> ", temp->info);
+        temp = temp->next;
     }
     printf("NULL\n");
 }
 
-void dellist(list *l, int v) {
-    node *t = l->first;
-    node *s = NULL;
-
-    if (t != NULL && t->info == v) {
-        l->first = t->next;
-        free(t);
-        return;
-    }
-
-    while (t != NULL && t->info != v) {
-        s = t;
-        t = t->next;
-    }
-
-    if (t == NULL) {
-        printf("Value %d not found in the list.\n", v);
-        return;
-    }
-
-    s->next = t->next;
-    free(t);
-}
-
 int main() {
-    list *ls = make_list();
-    int a, v, p, i, n;
+    list *l = make_list();
 
-    printf("Enter the number of values in the list: ");
-    scanf("%d", &n);
+    createlist(l, 4);
+    createlist(l, 8);
+    createlist(l, 9);
+    createlist(l, 5);
+    createlist(l, 6);
 
-    printf("Enter %d values:\n", n);
-    for (i = 0; i < n; i++) {
-        scanf("%d", &a);
-        createlist(ls, a);
-    }
+    display(l);
 
-    printlist(ls);
+    printf("\nNTR FIRST NODE IN LIST: 1\n");
+    first_node(l, 1);
+    display(l);
 
-    printf("\nEnter value to insert at first: ");
-    scanf("%d", &v);
-    firstnode(ls, v);
-    printlist(ls);
+    printf("\nNTR NODE IN MIDDLE:\n");
+    printf("ntr prev node 8\n");
+    printf("ntr new node 10\n");
+    midaddnode(l, 8, 10);
+    display(l);
 
-    printf("\nEnter node after which to insert: ");
-    scanf("%d", &p);
-    printf("Enter new node value: ");
-    scanf("%d", &v);
-    maddnode(ls, p, v);
-    printlist(ls);
+    printf("\nNTR LAST NODE: 7\n");
+    last_node(l, 7);
+    display(l);
 
-    printf("\nEnter value to insert at last: ");
-    scanf("%d", &v);
-    laddnode(ls, v);
-    printlist(ls);
-
-    printf("\nEnter value to delete: ");
-    scanf("%d", &v);
-    dellist(ls, v);
-    printlist(ls);
+    printf("\nNtr val to be del: 9\n");
+    delete_node(l, 9);
+    display(l);
 
     return 0;
 }
+
 
