@@ -129,6 +129,17 @@ void binarySearch(int arr[], int Size) {
     printf("Enter the value to search: ");
     scanf("%d", &val);
 
+    // NOTE: Binary Search requires the array to be sorted
+    for (int i = 0; i < Size - 1; i++) {
+        for (int j = 0; j < Size - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+
     while (low <= high) {
         mid = (low + high) / 2;
 
@@ -145,5 +156,5 @@ void binarySearch(int arr[], int Size) {
 
     if (!found) {
         printf("Value not found\n");
-    }
+    }
 }
