@@ -27,7 +27,7 @@ int main() {
         return 1;
     }
     
-   
+    // Initialize graph and visited arrays
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             graph[i][j] = 0;
@@ -48,12 +48,4 @@ int main() {
         }
         
         graph[x][y] = 1;
-        graph[y][x] = 1; 
-    }
-    
-    printf("DFS traversal starting from vertex 0:\n");
-    DFS(0);
-    printf("\n");
-    
-    return 0;
-}
+        graph[y][x] = 1; // Undirected graph
