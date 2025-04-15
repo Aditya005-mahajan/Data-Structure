@@ -7,7 +7,7 @@ typedef struct node {
 } node;
 
 typedef struct {
-    struct node *first;
+    node *first;
 } list;
 
 list *make_list(void) {
@@ -16,12 +16,12 @@ list *make_list(void) {
     return l;
 }
 
-void creatlist(list *l, int v) {
+void createlist(list *l, int v) {
     node *n = (node *)malloc(sizeof(node));
     n->info = v;
-    
+    n->next = NULL;
+
     if (l->first == NULL) {
-        n->next = NULL;
         l->first = n;
     } else {
         node *p = l->first;
@@ -29,7 +29,6 @@ void creatlist(list *l, int v) {
             p = p->next;
         }
         p->next = n;
-        n->next = NULL;
     }
 }
 
@@ -41,30 +40,27 @@ void firstnode(list *l, int v) {
 }
 
 void maddnode(list *l, int p, int v) {
-    node *n = (node *)malloc(sizeof(node));
-    n->info = v;
     node *t = l->first;
-    
     while (t != NULL && t->info != p) {
         t = t->next;
     }
-    
+
     if (t != NULL) {
+        node *n = (node *)malloc(sizeof(node));
+        n->info = v;
         n->next = t->next;
         t->next = n;
     } else {
         printf("Value %d not found in the list.\n", p);
-        free(n);
     }
 }
 
 void laddnode(list *l, int v) {
-    creatlist(l, v);
+    createlist(l, v);
 }
 
 void printlist(list *l) {
     node *t = l->first;
-    
     printf("Linked List: ");
     while (t != NULL) {
         printf("%d -> ", t->info);
@@ -74,8 +70,9 @@ void printlist(list *l) {
 }
 
 void dellist(list *l, int v) {
-    node *t = l->first, *s = NULL;
-    
+    node *t = l->first;
+    node *s = NULL;
+
     if (t != NULL && t->info == v) {
         l->first = t->next;
         free(t);
@@ -106,7 +103,7 @@ int main() {
     printf("Enter %d values:\n", n);
     for (i = 0; i < n; i++) {
         scanf("%d", &a);
-        creatlist(ls, a);
+        createlist(ls, a);
     }
 
     printlist(ls);
@@ -133,5 +130,6 @@ int main() {
     dellist(ls, v);
     printlist(ls);
 
-    return 0;
+    return 0;
 }
+
