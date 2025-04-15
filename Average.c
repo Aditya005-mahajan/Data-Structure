@@ -16,7 +16,7 @@ int main()
 
         while (marks < 0 || marks > 100)
         {
-            printf("Invalid input, re-enter:\n");
+            printf("Invalid input, re-enter: ");
             scanf("%f", &marks);
         }
 
@@ -39,6 +39,12 @@ int main()
     }
     else
     {
+        printf("Failed\n");
+    }
+
+    return 0;
+}
+
         printf("Failed\n");
     }
 
